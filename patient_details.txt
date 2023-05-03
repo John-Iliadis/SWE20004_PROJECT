@@ -1,0 +1,5 @@
+patient_id,name,dob,address,visited_location,last_overseas_travel,covid_test,status,date_time
+10,f,f,f,f,f,f,f
+20,d,f,f,f,d,df
+30,df,d,df,d,df
+40,df,df,df,df,df
