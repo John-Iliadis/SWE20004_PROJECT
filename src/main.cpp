@@ -43,10 +43,8 @@ int main()
         }
     }*/
 
-   // std::ifstream file("../patient_details.txt");
-
-   //pick_symptoms();
-   option1();
+    // testing
+    option1();
 
     return 0;
 }

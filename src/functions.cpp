@@ -21,6 +21,9 @@ void option1()
     std::ifstream symptoms_file("../symptoms.txt");
     std::ifstream high_risk_loc_file("../high_risk_covid_locations.txt");
 
+    if (!patient_details.is_open() || !symptoms_file.is_open() || !high_risk_loc_file.is_open())
+        throw std::runtime_error("Option1() - Failed to open all files");
+
     {
         std::string str;
         std::getline(symptoms_file, str); // skip header
@@ -35,7 +38,23 @@ void option1()
     }
 
     PatientRecord record;
+    get_id(patient_details, record);
+    get_name(record);
+    get_dob(record);
+    get_address(record);
+    get_overseas_travel(record);
+    record.symptoms = std::move(pick_symptoms(symptoms_file));
+    record.visited_high_risk_locations = std::move(pick_high_risk_visited_locations(high_risk_loc_file));
 
+    patient_details.close();
+    symptoms_file.close();
+    high_risk_loc_file.close();
+
+    // implement algorithm for recommending test
+}
+
+void get_id(std::ifstream& patient_details, PatientRecord& record)
+{
     std::cout << "Enter patient id:";
     std::getline(std::cin, record.id);
 
@@ -45,9 +64,10 @@ void option1()
         std::cout << "Enter patient id:";
         std::getline(std::cin, record.id);
     }
+}
 
-    patient_details.close();
-
+void get_name(PatientRecord& record)
+{
     std::cout << "Enter first name:";
     std::getline(std::cin, record.fname);
 
@@ -67,7 +87,10 @@ void option1()
         std::cout << "Enter last name:";
         std::getline(std::cin, record.lname);
     }
+}
 
+void get_dob(PatientRecord& record)
+{
     std::cout << "Enter date of birth in this format (dd-mm-yyyy):";
     std::getline(std::cin, record.dob);
 
@@ -77,7 +100,10 @@ void option1()
         std::cout << "Enter date of birth in this format (dd-mm-yyyy):";
         std::getline(std::cin, record.dob);
     }
+}
 
+void get_address(PatientRecord& record)
+{
     std::cout << "Enter address:";
     std::getline(std::cin, record.address);
 
@@ -87,7 +113,10 @@ void option1()
         std::cout << "Enter address:";
         std::getline(std::cin, record.address);
     }
+}
 
+void get_overseas_travel(PatientRecord& record)
+{
     std::cout << "Enter last overseas travel date in this format (dd-mm-yyyy):";
     std::getline(std::cin, record.last_overseas_travel);
 
@@ -97,14 +126,6 @@ void option1()
         std::cout << "Enter last overseas travel date in this format (dd-mm-yyyy):";
         std::getline(std::cin, record.last_overseas_travel);
     }
-
-    record.symptoms = std::move(pick_symptoms(symptoms_file));
-    symptoms_file.close();
-
-    record.visited_high_risk_locations = std::move(pick_high_risk_visited_locations(high_risk_loc_file));
-    high_risk_loc_file.close();
-
-    // implement algorithm for recommending test
 }
 
 Symptoms pick_symptoms(std::ifstream& file)
@@ -160,6 +181,7 @@ Symptoms pick_symptoms(std::ifstream& file)
     {
         auto& symptom = symptoms_map[symptom_id];
 
+        // check if symptom is already in vector
         if (symptom.second == "high")
             symptoms.high_risk_symptoms.push_back(symptom.first);
         else if (symptom.second == "medium")
@@ -168,7 +190,7 @@ Symptoms pick_symptoms(std::ifstream& file)
             symptoms.low_risk_symptoms.push_back(symptom.first);
     }
 
-    return Symptoms();
+    return symptoms;
 }
 
 std::vector<std::string> pick_high_risk_visited_locations(std::ifstream& file)
@@ -229,6 +251,7 @@ std::vector<std::string> pick_high_risk_visited_locations(std::ifstream& file)
     std::vector<std::string> visited_locations;
     for (int location_id : selected_locations)
     {
+        // check if visited location is already in vector
         std::string& visited_location = hr_locations_map[location_id];
         visited_locations.push_back(visited_location);
     }
