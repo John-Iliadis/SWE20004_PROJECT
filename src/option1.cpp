@@ -2,18 +2,8 @@
 // Created by Gianni on 3/05/2023.
 //
 
-#include "../include/functions.hpp"
+#include "../include/option1.hpp"
 
-void prompt()
-{
-    std::cout << "Press 1 - Enter details for a COVID test recommendation\n";
-    std::cout << "Press 2 - Submit COVID test status & update location database\n";
-    std::cout << "Press 3 - Display the updated location (high risk for COVID)\n";
-    std::cout << "Press 4 - Update COVID patient details\n";
-    std::cout << "Press 5 - Display all positive COVID patients details\n";
-    std::cout << "Press 6 - Exit\n";
-    std::cout << "Option -->";
-}
 
 void option1()
 {

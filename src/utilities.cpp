@@ -4,7 +4,18 @@
 
 #include "../include/utilities.hpp"
 
+void prompt()
+{
+    std::cout << "Press 1 - Enter details for a COVID test recommendation\n";
+    std::cout << "Press 2 - Submit COVID test status & update location database\n";
+    std::cout << "Press 3 - Display the updated location (high risk for COVID)\n";
+    std::cout << "Press 4 - Update COVID patient details\n";
+    std::cout << "Press 5 - Display all positive COVID patients details\n";
+    std::cout << "Press 6 - Exit\n";
+    std::cout << "Option -->";
+}
 
+// checks if string entered fits the dd-mm-yyyy format
 bool check_date_format(const std::string& date)
 {
     std::regex reg(R"(\b(0?[1-9]|[1-2][0-9]|3[0-1])-(0?[1-9]|1[0-2])-\d{4}\b)");
@@ -50,6 +61,7 @@ std::string time_to_string(std::tm& time)
     return hours + ':' + minutes + ':' + seconds;
 }
 
+// checks is the string is numeric
 bool is_num(const std::string& str)
 {
     if (std::ranges::all_of(str.begin(), str.end(), [] (char c) {

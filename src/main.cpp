@@ -1,5 +1,5 @@
 #include <iostream>
-#include "../include/functions.hpp"
+#include "../include/option1.hpp"
 
 int main()
 {

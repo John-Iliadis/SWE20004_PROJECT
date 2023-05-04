@@ -2,16 +2,13 @@
 // Created by Gianni on 3/05/2023.
 //
 
-#ifndef PROJECT_CODE_FUNCTIONS_HPP
-#define PROJECT_CODE_FUNCTIONS_HPP
+#ifndef PROJECT_CODE_OPTION1_HPP
+#define PROJECT_CODE_OPTION1_HPP
 #include <fstream>
 #include <iostream>
 #include <algorithm>
 #include "utilities.hpp"
 
-void prompt();
-
-// option 1 functions
 void option1();
 
 bool check_id_exists(std::ifstream& file, const std::string& id);
@@ -25,4 +22,4 @@ void pick_symptoms(PatientRecord& record, std::ifstream& file);
 
 void pick_high_risk_visited_locations(PatientRecord& record, std::ifstream& file);
 
-#endif //PROJECT_CODE_FUNCTIONS_HPP
+#endif //PROJECT_CODE_OPTION1_HPP
