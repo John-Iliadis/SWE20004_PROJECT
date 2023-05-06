@@ -4,7 +4,6 @@
 
 #include "../include/option1.hpp"
 
-
 void option1()
 {
     std::ifstream patient_details("../patient_details.txt");
@@ -41,7 +40,9 @@ void option1()
     symptoms_file.close();
     high_risk_loc_file.close();
 
-    // implement algorithm for recommending test
+    insert_record(record);
+
+    recommend_covid_test(record);
 }
 
 bool check_id_exists(std::ifstream& file, const std::string& id)
@@ -201,7 +202,6 @@ void pick_symptoms(PatientRecord& record, std::ifstream& file)
     {
         auto& symptom = symptoms_map[symptom_id];
 
-        // check if symptom is already in vector
         if (symptom.second == "high")
             add_symptom(symptoms.high_risk_symptoms, symptom.first);
         else if (symptom.second == "medium")
@@ -220,7 +220,7 @@ void pick_high_risk_visited_locations(PatientRecord& record, std::ifstream& file
 
         if (str == "")
         {
-            std::cout << "NO HIGH RISK LOCATIONS IN DATABASE";;
+            std::cout << "NO HIGH RISK LOCATIONS IN DATABASE";
             return; // there are no high risks locations in database so this part is skipped
         }
     }
@@ -275,5 +275,51 @@ void pick_high_risk_visited_locations(PatientRecord& record, std::ifstream& file
         // checks if location is already in the list before adding
         if (std::find(visited_locations.begin(), visited_locations.end(), visited_location) == visited_locations.end())
             visited_locations.push_back(visited_location);
+    }
+}
+
+// This function inserts a row of data into the patient
+// details table.
+void insert_record(PatientRecord& record)
+{
+    std::ofstream patient_details("../patient_details.txt", std::ios::app);
+
+    if (patient_details.fail())
+        throw std::runtime_error("insert_record() - Failed to open file");
+
+    std::time_t current_time = std::time(nullptr);
+
+    record.date_time = *std::localtime(&current_time);
+    record.date_time.tm_year += 1900;
+
+    std::string row {
+        record.id + ',' +
+        record.fname + ' ' + record.lname + ',' +
+        record.dob + ',' +
+        record.address + ',' +
+        "null" + ',' +
+        record.last_overseas_travel + ',' +
+        "null" + ',' +
+        "null" + ',' +
+        date_to_string(record.date_time) + ' ' + time_to_string(record.date_time)
+    };
+
+    patient_details << row << std::endl;
+    patient_details.close();
+}
+
+void recommend_covid_test(PatientRecord& record)
+{
+    if (!record.visited_high_risk_locations.empty()
+    && (!record.symptoms.low_risk_symptoms.empty()
+    || !record.symptoms.medium_risk_symptoms.empty()
+    || !record.symptoms.high_risk_symptoms.empty()))
+    {
+        std::cout << "Result : Get a COVID test.";
+    }
+    else if (record.visited_high_risk_locations.empty()
+    && record.symptoms.high_risk_symptoms.empty())
+    {
+        std::cout << "Result : Isolate yourself at home.";
     }
 }

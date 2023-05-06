@@ -1,5 +1,4 @@
 patient_id,name,dob,address,visited_location,last_overseas_travel,covid_test,status,date_time
-10,f,f,f,f,f,f,f
-20,d,f,f,f,d,df
-30,df,d,df,d,df
-40,df,df,df,df,df
+123,john iliadis,17-08-2001,23 george st,null,24-08-2022,null,null,6-4-2023 19:47:8
+34,nick mike,17-10-2003,52 mark rd,null,23-1-2014,null,null,6-4-2023 19:48:39
+89,george brt,22-03-1990,50 mark st,null,30-12-2020,null,null,6-4-2023 20:8:54
