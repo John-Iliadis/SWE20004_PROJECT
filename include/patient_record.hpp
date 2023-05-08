@@ -4,7 +4,6 @@
 
 #ifndef PROJECT_CODE_PATIENT_RECORD_HPP
 #define PROJECT_CODE_PATIENT_RECORD_HPP
-#include <fstream>
 #include <ctime>
 #include <vector>
 
@@ -17,7 +16,7 @@ struct Symptoms
 
 struct PatientRecord
 {
-    std::string id{};
+    std::string id;
     std::string fname;
     std::string lname;
     std::string dob;

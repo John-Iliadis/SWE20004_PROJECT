@@ -46,5 +46,7 @@ int main()
     // testing
     option1();
 
+    std::vector<void(*)()> funcs;
+
     return 0;
 }

@@ -1,16 +1,16 @@
-symptom,risk_level
-fever,high
-runny nose,medium
-cough,high
-sore throat,high
-shortness of breath,medium
-body ache,high
-diarrhea,medium
-loss of taste,high
-loss of smell,medium
-vomit,low
-headache,medium
-digestion problems,low
-rashes,low
-confusion,low
-exhaustion,high
+symptom;risk_level
+fever;high
+runny nose;medium
+cough;high
+sore throat;high
+shortness of breath;medium
+body ache;high
+diarrhea;medium
+loss of taste;high
+loss of smell;medium
+vomit;low
+headache;medium
+digestion problems;low
+rashes;low
+confusion;low
+exhaustion;high

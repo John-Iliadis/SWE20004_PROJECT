@@ -11,14 +11,14 @@ void option1()
     std::ifstream high_risk_loc_file("../high_risk_covid_locations.txt");
 
     // checking if all files are opened
-    if (!patient_details.is_open() || !symptoms_file.is_open() || !high_risk_loc_file.is_open())
+    if (patient_details.fail() || symptoms_file.fail() || high_risk_loc_file.fail())
         throw std::runtime_error("Option1() - Failed to open all files");
 
     { // checking is symptoms database is populated
         std::string str;
         std::getline(symptoms_file, str); // skip header
         std::getline(symptoms_file, str);
-        symptoms_file.seekg(0);
+        symptoms_file.seekg(0); // move pointer back to the start of the file
 
         if (str == "")
         {
@@ -54,7 +54,7 @@ bool check_id_exists(std::ifstream& file, const std::string& id)
     {
         std::stringstream ss(line);
         std::string existing_id;
-        std::getline(ss, existing_id, ',');
+        std::getline(ss, existing_id, ';');
 
         if (id == existing_id)
             return true;
@@ -81,12 +81,14 @@ void get_name(PatientRecord& record)
     // this function gets the fullname of the patient
     // the input must not be empty or contain a comma, since that can mess up searching later
 
+    std::regex reg("^[a-zA-Z]{1,30}$");
+
     std::cout << "Enter first name:";
     std::getline(std::cin, record.fname);
 
-    while (record.fname == "" || record.fname.contains(','))
+    while (!std::regex_match(record.fname, reg))
     {
-        std::cout << "INVALID NAME\n";
+        std::cout << "INVALID NAME : Name should only contain letters and have 1-30 length\n";
         std::cout << "Enter first name:";
         std::getline(std::cin, record.fname);
     }
@@ -94,9 +96,9 @@ void get_name(PatientRecord& record)
     std::cout << "Enter last name:";
     std::getline(std::cin, record.lname);
 
-    while (record.lname == "" || record.lname.contains(','))
+    while (!std::regex_match(record.lname, reg))
     {
-        std::cout << "INVALID NAME\n";
+        std::cout << "INVALID NAME : Name should only contain letters and have 1-30 length\n";
         std::cout << "Enter last name:";
         std::getline(std::cin, record.lname);
     }
@@ -117,12 +119,14 @@ void get_dob(PatientRecord& record)
 
 void get_address(PatientRecord& record)
 {
+    std::regex reg("^[a-zA-Z0-9,\\s]{1,255}");
+
     std::cout << "Enter address:";
     std::getline(std::cin, record.address);
 
-    while (record.address == "" || record.address.contains(','))
+    while (!std::regex_match(record.address, reg))
     {
-        std::cout << "INVALID ADDRESS\n";
+        std::cout << "INVALID ADDRESS : No special characters are allowed and length should be 1-255\n";
         std::cout << "Enter address:";
         std::getline(std::cin, record.address);
     }
@@ -153,7 +157,7 @@ void pick_symptoms(PatientRecord& record, std::ifstream& file)
         std::stringstream ss(line);
         std::string symptom;
         std::string risk;
-        std::getline(ss, symptom, ',');
+        std::getline(ss, symptom, ';');
         std::getline(ss, risk);
         symptoms_map[id] = std::make_pair(symptom, risk);
         std::transform(symptom.begin(), symptom.end(), symptom.begin(), ::toupper);
@@ -293,14 +297,14 @@ void insert_record(PatientRecord& record)
     record.date_time.tm_year += 1900;
 
     std::string row {
-        record.id + ',' +
-        record.fname + ' ' + record.lname + ',' +
-        record.dob + ',' +
-        record.address + ',' +
-        "null" + ',' +
-        record.last_overseas_travel + ',' +
-        "null" + ',' +
-        "null" + ',' +
+        record.id + ';' +
+        record.fname + ' ' + record.lname + ';' +
+        record.dob + ';' +
+        record.address + ';' +
+        "null" + ';' +
+        record.last_overseas_travel + ';' +
+        "null" + ';' +
+        "null" + ';' +
         date_to_string(record.date_time) + ' ' + time_to_string(record.date_time)
     };
 
