@@ -17,14 +17,13 @@ void option4()
 
     if (empty_database(patient_details_i))
     {
-        std::cout << "The database is empty\n";
+        std::cout << "The patient details database is empty\n";
         patient_details_i.close();
         return;
     }
 
     std::vector<std::string> rows;
     std::string row;
-    std::getline(patient_details_i, row); // discard header
 
     // get all records in a vector
     while (std::getline(patient_details_i, row))
@@ -59,21 +58,6 @@ void option4()
     temp_file_i.close();
 }
 
-bool empty_database(std::ifstream& file)
-{
-    std::string line;
-    std::getline(file, line); // discard header
-    std::getline(file, line);
-
-    if (line == "")
-        return true;
-
-    file.clear();
-    file.seekg(0);
-
-    return false;
-}
-
 PatientRecord find_positive_patient(std::vector<std::string>& vec)
 {
     PatientRecord record;
@@ -104,36 +88,5 @@ void get_status(PatientRecord& record)
         std::cout << "Enter the patients new status (dead/alive/cured):";
         std::getline(std::cin, record.status);
         str_tolower(record.status);
-    }
-}
-
-void copy_to_temp(std::ifstream& input_file, std::ofstream& output_file, PatientRecord& record)
-{
-    input_file.clear();
-    input_file.seekg(0);
-
-    std::string line;
-
-    while (std::getline(input_file, line))
-    {
-        std::stringstream ss(line);
-        std::string found_id;
-        std::getline(ss, found_id, ';');
-
-        if (found_id == record.id) continue;
-
-        output_file << line << std::endl;
-    }
-
-    insert_patient_record(record, output_file);
-}
-
-void repopulate_main(std::ifstream& input_file, std::ofstream& output_file)
-{
-    std::string line;
-
-    while (std::getline(input_file, line))
-    {
-        output_file << line << std::endl;
     }
 }

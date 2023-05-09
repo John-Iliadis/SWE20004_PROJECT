@@ -14,22 +14,16 @@ void option1()
     if (patient_details.fail() || symptoms_file.fail() || high_risk_loc_file.fail())
         throw std::runtime_error("Option1() - Failed to open all files");
 
-    { // checking is symptoms database is populated
-        std::string str;
-        std::getline(symptoms_file, str); // skip header
-        std::getline(symptoms_file, str);
-        symptoms_file.clear();
-        symptoms_file.seekg(0); // move pointer back to the start of the file
-
-        if (str == "")
-        {
-            std::cout << "UNABLE TO RECOMMEND COVID TEST - SYMPTOMS DATABASE EMPTY\n";
-            patient_details.close();
-            symptoms_file.close();
-            high_risk_loc_file.close();
-            return;
-        }
+    // checking if symptoms database is populated
+    if (empty_database(symptoms_file))
+    {
+        std::cout << "UNABLE TO RECOMMEND COVID TEST - SYMPTOMS DATABASE EMPTY\n";
+        patient_details.close();
+        symptoms_file.close();
+        high_risk_loc_file.close();
+        return;
     }
+
 
     PatientRecord record;
     get_id(patient_details, record);
@@ -127,7 +121,6 @@ void get_overseas_travel(PatientRecord& record)
 void pick_symptoms(PatientRecord& record, std::ifstream& file)
 {
     std::string line;
-    std::getline(file, line); // discard header
     std::unordered_map<int, std::pair<std::string, std::string>> symptoms_map;
 
     std::cout << "\nSymptoms List:\n";
@@ -208,17 +201,10 @@ void pick_symptoms(PatientRecord& record, std::ifstream& file)
 
 void pick_high_risk_visited_locations(PatientRecord& record, std::ifstream& file)
 {
-    { // checking if database is empty
-        std::string str;
-        std::getline(file, str);
-        file.clear();
-        file.seekg(0);
-
-        if (str == "")
-        {
-            std::cout << "NO HIGH RISK LOCATIONS IN DATABASE";
-            return; // there are no high risks locations in database so this part is skipped
-        }
+    if (empty_database(file))
+    {
+        std::cout << "NO HIGH RISK LOCATIONS IN DATABASE";
+        return; // there are no high risks locations in database so this part is skipped
     }
 
     std::unordered_map<int, std::string> hr_locations_map;

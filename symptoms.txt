@@ -1,4 +1,3 @@
-symptom;risk_level
 fever;high
 runny nose;medium
 cough;high

@@ -20,7 +20,6 @@ bool check_id_exists(std::ifstream& file, const std::string& id)
     std::string line;
     file.clear();
     file.seekg(0);
-    std::getline(file, line); // discard header
 
     while (std::getline(file, line))
     {
@@ -41,6 +40,20 @@ bool check_date_format(const std::string& date)
     std::regex reg(R"(\b(0?[1-9]|[1-2][0-9]|3[0-1])-(0?[1-9]|1[0-2])-\d{4}\b)");
 
     if (std::regex_match(date, reg))
+        return true;
+
+    return false;
+}
+
+bool empty_database(std::ifstream& file)
+{
+    std::string line;
+    std::getline(file, line);
+
+    file.clear();
+    file.seekg(0);
+
+    if (line == "")
         return true;
 
     return false;
@@ -164,7 +177,6 @@ PatientRecord get_patient_record(std::ifstream& file, const std::string& id)
     file.seekg(0);
 
     std::string line;
-    std::getline(file, line); // discard header
     PatientRecord record;
 
     while (std::getline(file, line))
@@ -224,4 +236,36 @@ void copy_file(const std::string& copy_from, const std::string& copy_to)
 
     input_file.close();
     output_file.close();
+}
+
+void copy_to_temp(std::ifstream& input_file, std::ofstream& output_file, PatientRecord& record)
+{
+    input_file.clear();
+    input_file.seekg(0);
+
+    std::string line;
+
+    while (std::getline(input_file, line))
+    {
+        std::stringstream ss(line);
+        std::string found_id;
+        std::getline(ss, found_id, ';');
+
+        if (found_id == record.id) continue;
+
+        output_file << line << std::endl;
+    }
+
+    insert_patient_record(record, output_file);
+}
+
+
+void repopulate_main(std::ifstream& input_file, std::ofstream& output_file)
+{
+    std::string line;
+
+    while (std::getline(input_file, line))
+    {
+        output_file << line << std::endl;
+    }
 }

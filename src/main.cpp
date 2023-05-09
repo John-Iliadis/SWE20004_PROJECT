@@ -52,14 +52,16 @@ int main()
 
     // testing
 
-    std::vector<std::vector<std::string>> vec {
+    option2();
+
+   /* std::vector<std::vector<std::string>> vec {
             {"1", "333", "666666"},
             {"22", "4444", "1"},
             {"88888888", "22", "1"},
             {"1", "55555", "22"}
     };
 
-    auto m = get_field_width(vec);
+    auto m = get_field_width(vec);*/
 
     return 0;
 }

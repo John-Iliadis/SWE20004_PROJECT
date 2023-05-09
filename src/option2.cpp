@@ -16,6 +16,13 @@ void option2()
     if (patient_details_i.fail() || temp_file_o.fail())
         throw std::runtime_error("option2() : Failed to open files.");
 
+    if (empty_database(patient_details_i))
+    {
+        std::cout << "The patient details database is empty\n";
+        patient_details_i.close();
+        return;
+    }
+
     std::string id;
     std::string covid_test_result;
 
@@ -26,39 +33,25 @@ void option2()
     PatientRecord record = get_patient_record(patient_details_i, id);
     record.covid_test = covid_test_result;
 
-    { // copying all records to the temp file except the current record which has to get overridden
-        patient_details_i.clear();
-        patient_details_i.seekg(0);
-
-        std::string line;
-        while (std::getline(patient_details_i, line))
-        {
-            std::stringstream ss(line);
-            std::string l_id;
-            std::getline(ss, l_id, ';');
-
-            if (l_id == id) continue;
-
-            temp_file_o << line << std::endl;
-        }
-    }
-
-    temp_file_o.close();
-    patient_details_i.close();
-
     if (covid_test_result == "positive")
     {
         get_visited_location(record);
         update_high_risk_location_database(record.visited_location);
+    }
 
-        insert_patient_record(record, temp_file_loc);
-        copy_file(temp_file_loc, patient_file_loc);
-    }
-    else
-    {
-        insert_patient_record(record, temp_file_loc);
-        copy_file(temp_file_loc, patient_file_loc);
-    }
+    copy_to_temp(patient_details_i, temp_file_o, record);
+
+    patient_details_i.close();
+    temp_file_o.close();
+
+    std::ofstream patient_file_o(patient_file_loc);
+    std::ifstream temp_file_i(temp_file_loc);
+
+
+    repopulate_main(temp_file_i, patient_file_o);
+
+    temp_file_i.close();
+    patient_file_o.close();
 }
 
 void get_id(std::ifstream& file, std::string& id)

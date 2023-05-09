@@ -20,11 +20,6 @@ void option5()
 
     table_t table;
 
-    { // remove later
-        std::string line;
-        std::getline(patient_details, line); // discard header
-    }
-
     table.push_back(
             {"PATIENT ID", "NAME", "DATE OF BIRTH", "VISITED LOCATION", "LAST OVERSEAS TRAVEL", "COVID TEST RESULT",
              "STATUS"});
