@@ -1,6 +1,7 @@
 #include <iostream>
 #include "../include/option1.hpp"
 #include "../include/option2.hpp"
+#include "../include/option3.hpp"
 
 int main()
 {
@@ -49,7 +50,7 @@ int main()
 
     // testing
 
-    option2();
+    option3();
 
     return 0;
 }
