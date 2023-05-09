@@ -39,7 +39,7 @@ void get_covid_test_result(std::string& covid_test_result)
 
     std::cout << "Enter covid test result (positive/negative):";
     std::getline(std::cin, covid_test_result);
-    str_toupper(covid_test_result);
+    str_tolower(covid_test_result);
 
     while (!std::regex_match(covid_test_result, reg))
     {
