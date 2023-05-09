@@ -81,7 +81,7 @@ void print_records(table_t& table, std::unordered_map<int,int>& field_widths)
     {
         for (int j = 0; j < table[i].size(); ++j)
         {
-            std::cout << std::setw(field_widths[j]) << std::left << str_toupper(table[i][j]);
+            std::cout << std::setw(field_widths[j] + 5) << std::left << str_toupper(table[i][j]);
         }
 
         std::cout << '\n';
