@@ -36,12 +36,15 @@ void option1()
     get_overseas_travel(record);
     pick_symptoms(record, symptoms_file);
     pick_high_risk_visited_locations(record, high_risk_loc_file);
+    record.visited_location = "null";
+    record.covid_test = "null";
+    record.status = "null";
 
     patient_details.close();
     symptoms_file.close();
     high_risk_loc_file.close();
 
-    insert_record(record);
+    insert_patient_record(record, "../patient_details.txt");
 
     recommend_covid_test(record);
 }
@@ -64,26 +67,16 @@ void get_name(PatientRecord& record)
     // this function gets the fullname of the patient
     // the input must not be empty or contain a comma, since that can mess up searching later
 
-    std::regex reg("^[a-zA-Z]{1,30}$");
+    std::regex reg("^[a-zA-Z ]{1,50}$");
 
-    std::cout << "Enter first name:";
-    std::getline(std::cin, record.fname);
+    std::cout << "Enter full name:";
+    std::getline(std::cin, record.name);
 
-    while (!std::regex_match(record.fname, reg))
+    while (!std::regex_match(record.name, reg))
     {
-        std::cout << "INVALID NAME : Name should only contain letters and have 1-30 length\n";
-        std::cout << "Enter first name:";
-        std::getline(std::cin, record.fname);
-    }
-
-    std::cout << "Enter last name:";
-    std::getline(std::cin, record.lname);
-
-    while (!std::regex_match(record.lname, reg))
-    {
-        std::cout << "INVALID NAME : Name should only contain letters and have 1-30 length\n";
-        std::cout << "Enter last name:";
-        std::getline(std::cin, record.lname);
+        std::cout << "INVALID NAME : Name should only contain letters and have 1-50 length\n";
+        std::cout << "Enter full name:";
+        std::getline(std::cin, record.name);
     }
 }
 
@@ -291,36 +284,6 @@ void pick_high_risk_visited_locations(PatientRecord& record, std::ifstream& file
     }
 }
 
-// This function inserts a row of data into the patient
-// details table.
-void insert_record(PatientRecord& record)
-{
-    std::ofstream patient_details("../patient_details.txt", std::ios::app);
-
-    if (patient_details.fail())
-        throw std::runtime_error("insert_record() - Failed to open file");
-
-    std::time_t current_time = std::time(nullptr);
-
-    record.date_time = *std::localtime(&current_time);
-    record.date_time.tm_year += 1900;
-
-    std::string row {
-        record.id + ';' +
-        record.fname + ' ' + record.lname + ';' +
-        record.dob + ';' +
-        record.address + ';' +
-        "null" + ';' +
-        record.last_overseas_travel + ';' +
-        "null" + ';' +
-        "null" + ';' +
-        date_to_string(record.date_time) + ' ' + time_to_string(record.date_time)
-    };
-
-    patient_details << row << std::endl;
-    patient_details.close();
-}
-
 void recommend_covid_test(PatientRecord& record)
 {
     std::cout << '\n';
@@ -337,4 +300,6 @@ void recommend_covid_test(PatientRecord& record)
     {
         std::cout << "Result : Isolate yourself at home.";
     }
+
+    std::cout << "\n";
 }

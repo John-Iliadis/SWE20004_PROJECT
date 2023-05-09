@@ -7,7 +7,7 @@
 void prompt()
 {
     std::cout << "Press 1 - Enter details for a COVID test recommendation\n";
-    std::cout << "Press 2 - Submit COVID test status & update location database\n";
+    std::cout << "Press 2 - Submit COVID test status\n";
     std::cout << "Press 3 - Display the updated location (high risk for COVID)\n";
     std::cout << "Press 4 - Update COVID patient details\n";
     std::cout << "Press 5 - Display all positive COVID patients details\n";
@@ -106,4 +106,82 @@ std::string& str_tolower(std::string& str)
     std::transform(str.begin(), str.end(), str.begin(), ::tolower);
 
     return str;
+}
+
+void insert_patient_record(PatientRecord& record, const std::string& file_name)
+{
+    std::ofstream patient_details(file_name, std::ios::app);
+
+    if (patient_details.fail())
+        throw std::runtime_error("insert_patient_record() - Failed to open file");
+
+    std::time_t current_time = std::time(nullptr);
+
+    record.date_time = *std::localtime(&current_time);
+    record.date_time.tm_year += 1900;
+
+    std::string row {
+            record.id + ';' +
+            record.name + ';' +
+            record.dob + ';' +
+            record.address + ';' +
+            record.visited_location + ';' +
+            record.last_overseas_travel + ';' +
+            record.covid_test + ';' +
+            record.status + ';' +
+            date_to_string(record.date_time) + ' ' + time_to_string(record.date_time)
+    };
+
+    patient_details << row << std::endl;
+    patient_details.close();
+}
+
+PatientRecord get_patient_record(std::ifstream& file, const std::string& id)
+{
+    file.clear();
+    file.seekg(0);
+
+    std::string line;
+    std::getline(file, line); // discard header
+    PatientRecord record;
+
+    while (std::getline(file, line))
+    {
+        std::stringstream ss(line);
+        std::string found_id;
+        std::getline(ss, found_id, ';');
+
+        if (id == found_id)
+        {
+            record.id = id;
+            std::getline(ss, record.name, ';');
+            std::getline(ss, record.dob, ';');
+            std::getline(ss, record.address, ';');
+            std::getline(ss, record.visited_location, ';');
+            std::getline(ss, record.last_overseas_travel, ';');
+            std::getline(ss, record.covid_test, ';');
+            std::getline(ss, record.status, ';');
+            return record;
+        }
+    }
+
+    return PatientRecord();
+}
+
+void copy_file(const std::string& copy_from, const std::string& copy_to)
+{
+    std::ifstream input_file(copy_from);
+    std::ofstream output_file(copy_to, std::ios::trunc);
+
+    if (input_file.fail() || output_file.fail())
+        throw std::runtime_error("copy_file() : Failed to open files");
+
+    std::string line;
+    while (std::getline(input_file, line))
+    {
+        output_file << line << '\n';
+    }
+
+    input_file.close();
+    output_file.close();
 }

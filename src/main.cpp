@@ -48,8 +48,8 @@ int main()
     }*/
 
     // testing
-    option2();
 
+    option2();
 
     return 0;
 }

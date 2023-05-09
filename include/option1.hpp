@@ -19,8 +19,6 @@ void pick_symptoms(PatientRecord& record, std::ifstream& file);
 
 void pick_high_risk_visited_locations(PatientRecord& record, std::ifstream& file);
 
-void insert_record(PatientRecord& record);
-
 void recommend_covid_test(PatientRecord& record);
 
 #endif //PROJECT_CODE_OPTION1_HPP

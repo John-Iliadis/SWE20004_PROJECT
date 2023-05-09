@@ -17,8 +17,7 @@ struct Symptoms
 struct PatientRecord
 {
     std::string id;
-    std::string fname;
-    std::string lname;
+    std::string name;
     std::string dob;
     std::string address;
     std::string visited_location;
