@@ -18,6 +18,7 @@ void option1()
         std::string str;
         std::getline(symptoms_file, str); // skip header
         std::getline(symptoms_file, str);
+        symptoms_file.clear();
         symptoms_file.seekg(0); // move pointer back to the start of the file
 
         if (str == "")
@@ -45,30 +46,12 @@ void option1()
     recommend_covid_test(record);
 }
 
-bool check_id_exists(std::ifstream& file, const std::string& id)
-{
-    std::string line;
-    std::getline(file, line); // discard header
-
-    while (std::getline(file, line))
-    {
-        std::stringstream ss(line);
-        std::string existing_id;
-        std::getline(ss, existing_id, ';');
-
-        if (id == existing_id)
-            return true;
-    }
-
-    return false;
-}
-
-void get_id(std::ifstream& patient_details, PatientRecord& record)
+void get_id(std::ifstream& file, PatientRecord& record)
 {
     std::cout << "Enter patient id:";
     std::getline(std::cin, record.id);
 
-    while (check_id_exists(patient_details, record.id) || !is_num(record.id))
+    while (check_id_exists(file, record.id) || !is_num(record.id))
     {
         std::cout << "PATIENT ID SHOULD BE NUMERIC AND UNIQUE\n";
         std::cout << "Enter patient id:";
@@ -151,6 +134,8 @@ void pick_symptoms(PatientRecord& record, std::ifstream& file)
     std::getline(file, line); // discard header
     std::unordered_map<int, std::pair<std::string, std::string>> symptoms_map;
 
+    std::cout << "\nSymptoms List:\n";
+
     int id = 1;
     while (std::getline(file, line))
     {
@@ -160,9 +145,8 @@ void pick_symptoms(PatientRecord& record, std::ifstream& file)
         std::getline(ss, symptom, ';');
         std::getline(ss, risk);
         symptoms_map[id] = std::make_pair(symptom, risk);
-        std::transform(symptom.begin(), symptom.end(), symptom.begin(), ::toupper);
 
-        std::cout << id << " - " << symptom << '\n';
+        std::cout << id << " - " << str_toupper(symptom) << '\n';
         id++;
     }
 
@@ -172,6 +156,17 @@ void pick_symptoms(PatientRecord& record, std::ifstream& file)
     std::getline(std::cin, line);
 
     if (line == "") return; // patient has no symptoms
+
+    std::regex reg("^[0-9,]*$");
+    while (!std::regex_match(line, reg))
+    {
+        std::cout << "INVALID INPUT : Only numbers and commas allowed\n";
+        std::cout << "Select all the experienced symptoms, if any. Separate them with a comma (ie 2,5,8)\n"
+                  << "-->";
+
+        std::getline(std::cin, line);
+        if (line == "") return;
+    }
 
     std::stringstream ss(line);
     std::string num;
@@ -220,6 +215,7 @@ void pick_high_risk_visited_locations(PatientRecord& record, std::ifstream& file
     { // checking if database is empty
         std::string str;
         std::getline(file, str);
+        file.clear();
         file.seekg(0);
 
         if (str == "")
@@ -233,12 +229,14 @@ void pick_high_risk_visited_locations(PatientRecord& record, std::ifstream& file
     std::string line;
     int id = 1;
 
+    std::cout << "\nHigh Risk Locations List:\n";
+
     // printing all locations and adding them to a map
     while (std::getline(file, line))
     {
         hr_locations_map[id] = line;
-        std::transform(line.begin(), line.end(), line.begin(), ::toupper);
-        std::cout << id << " - " << line << '\n';
+
+        std::cout << id << " - " << str_toupper(line) << '\n';
 
         id++;
     }
@@ -249,6 +247,17 @@ void pick_high_risk_visited_locations(PatientRecord& record, std::ifstream& file
     std::getline(std::cin, line);
 
     if (line == "") return; // patient hasn't been to any high risk location
+
+    std::regex reg("^[0-9,]*$");
+    while (!std::regex_match(line, reg))
+    {
+        std::cout << "INVALID INPUT : Only numbers and commas allowed\n";
+        std::cout << "Select all the recently visited high risk locations, if any. Separate them with a comma (ie 2,5,8)\n"
+                  << "-->";
+
+        std::getline(std::cin, line);
+        if (line == "") return;
+    }
 
     std::stringstream ss(line);
     std::string num;
@@ -314,6 +323,8 @@ void insert_record(PatientRecord& record)
 
 void recommend_covid_test(PatientRecord& record)
 {
+    std::cout << '\n';
+
     if (!record.visited_high_risk_locations.empty()
     && (!record.symptoms.low_risk_symptoms.empty()
     || !record.symptoms.medium_risk_symptoms.empty()

@@ -1,11 +1,15 @@
 #include <iostream>
 #include "../include/option1.hpp"
+#include "../include/option2.hpp"
 
 int main()
 {
     /*bool program_running = true;
     std::string input;
     int option{};
+
+         //std::vector<void(*)()> funcs;
+
 
     while (program_running)
     {
@@ -44,9 +48,8 @@ int main()
     }*/
 
     // testing
-    option1();
+    option2();
 
-    std::vector<void(*)()> funcs;
 
     return 0;
 }

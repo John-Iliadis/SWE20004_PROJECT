@@ -15,6 +15,26 @@ void prompt()
     std::cout << "Option -->";
 }
 
+bool check_id_exists(std::ifstream& file, const std::string& id)
+{
+    std::string line;
+    file.clear();
+    file.seekg(0);
+    std::getline(file, line); // discard header
+
+    while (std::getline(file, line))
+    {
+        std::stringstream ss(line);
+        std::string existing_id;
+        std::getline(ss, existing_id, ';');
+
+        if (id == existing_id)
+            return true;
+    }
+
+    return false;
+}
+
 // checks if string entered fits the dd-mm-yyyy format
 bool check_date_format(const std::string& date)
 {
@@ -72,4 +92,18 @@ bool is_num(const std::string& str)
     }
 
     return false;
+}
+
+std::string& str_toupper(std::string& str)
+{
+    std::transform(str.begin(), str.end(), str.begin(), ::toupper);
+
+    return str;
+}
+
+std::string& str_tolower(std::string& str)
+{
+    std::transform(str.begin(), str.end(), str.begin(), ::tolower);
+
+    return str;
 }

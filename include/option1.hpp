@@ -4,15 +4,12 @@
 
 #ifndef PROJECT_CODE_OPTION1_HPP
 #define PROJECT_CODE_OPTION1_HPP
-#include <fstream>
-#include <iostream>
 #include <algorithm>
 #include "utilities.hpp"
 
 void option1();
 
-bool check_id_exists(std::ifstream& file, const std::string& id);
-void get_id(std::ifstream& patient_details, PatientRecord& record);
+void get_id(std::ifstream& file, PatientRecord& record);
 void get_name(PatientRecord& record);
 void get_dob(PatientRecord& record);
 void get_address(PatientRecord& record);
