@@ -27,10 +27,12 @@ std::string& str_tolower(std::string& str);
 
 // This function inserts a patient record into a database.
 void insert_patient_record(PatientRecord& record, const std::string& file_name);
+void insert_patient_record(PatientRecord& record, std::ofstream& file);
 
 // Returns a PatientRecord struct from a file, given the id.
 // Make sure id exists before using this, otherwise an empty record will get returned
 PatientRecord get_patient_record(std::ifstream& file, const std::string& id);
+PatientRecord get_patient_record(const std::string& row);
 
 // copies all the contents from one file to another.
 // The file that is written to, will get truncated

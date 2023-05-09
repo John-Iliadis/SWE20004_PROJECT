@@ -1,0 +1,139 @@
+//
+// Created by Gianni on 9/05/2023.
+//
+
+#include "../include/option4.hpp"
+
+void option4()
+{
+    std::string patient_file_loc = "../patient_details.txt";
+    std::string temp_file_loc = "../temp.txt";
+
+    std::ifstream patient_details_i(patient_file_loc);
+    std::ofstream temp_file_o(temp_file_loc, std::ios::trunc);
+
+    if (patient_details_i.fail())
+        throw std::runtime_error("option4() : Failed to open file");
+
+    if (empty_database(patient_details_i))
+    {
+        std::cout << "The database is empty\n";
+        patient_details_i.close();
+        return;
+    }
+
+    std::vector<std::string> rows;
+    std::string row;
+    std::getline(patient_details_i, row); // discard header
+
+    // get all records in a vector
+    while (std::getline(patient_details_i, row))
+    {
+        rows.push_back(std::move(row));
+    }
+
+    // find the most recent covid patient
+    PatientRecord record = find_positive_patient(rows);
+
+    // If none of the patients have covid, the function is terminated
+    if (record.covid_test == "negative")
+    {
+        std::cout << "None of the patients have covid\n";
+        return;
+    }
+
+    get_status(record); // input the new status
+
+    copy_to_temp(patient_details_i, temp_file_o, record); // copy file to temp
+
+    patient_details_i.close();
+    temp_file_o.close();
+
+    // open the patient details database for writing
+    std::ofstream patient_details_o(patient_file_loc, std::ios::trunc);
+    std::ifstream temp_file_i(temp_file_loc);
+
+    repopulate_main(temp_file_i, patient_details_o);
+
+    patient_details_o.close();
+    temp_file_i.close();
+}
+
+bool empty_database(std::ifstream& file)
+{
+    std::string line;
+    std::getline(file, line); // discard header
+    std::getline(file, line);
+
+    if (line == "")
+        return true;
+
+    file.clear();
+    file.seekg(0);
+
+    return false;
+}
+
+PatientRecord find_positive_patient(std::vector<std::string>& vec)
+{
+    PatientRecord record;
+
+    // reverse iterate so we get the most recent covid patient
+    for (auto& row : std::ranges::views::reverse(vec))
+    {
+        record = get_patient_record(row);
+
+        if (record.covid_test == "positive")
+            break;
+    }
+
+    return record;
+}
+
+void get_status(PatientRecord& record)
+{
+    std::regex reg("\\b(dead|alive|cured)\\b");
+
+    std::cout << "Enter the patients new status (dead/alive/cured):";
+    std::getline(std::cin, record.status);
+    str_tolower(record.status);
+
+    while (!std::regex_match(record.status, reg))
+    {
+        std::cout << "INVALID INPUT - Value should be in (dead/alive/cured)\n";
+        std::cout << "Enter the patients new status (dead/alive/cured):";
+        std::getline(std::cin, record.status);
+        str_tolower(record.status);
+    }
+}
+
+void copy_to_temp(std::ifstream& input_file, std::ofstream& output_file, PatientRecord& record)
+{
+    input_file.clear();
+    input_file.seekg(0);
+
+    std::string line;
+
+    while (std::getline(input_file, line))
+    {
+        std::stringstream ss(line);
+        std::string found_id;
+        std::getline(ss, found_id, ';');
+
+        if (found_id == record.id) continue;
+
+        output_file << line << std::endl;
+    }
+
+    insert_patient_record(record, output_file);
+}
+
+void repopulate_main(std::ifstream& input_file, std::ofstream& output_file)
+{
+    std::string line;
+
+    while (std::getline(input_file, line))
+    {
+        output_file << line << std::endl;
+    }
+}

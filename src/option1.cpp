@@ -24,6 +24,9 @@ void option1()
         if (str == "")
         {
             std::cout << "UNABLE TO RECOMMEND COVID TEST - SYMPTOMS DATABASE EMPTY\n";
+            patient_details.close();
+            symptoms_file.close();
+            high_risk_loc_file.close();
             return;
         }
     }

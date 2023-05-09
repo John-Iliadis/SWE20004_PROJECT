@@ -1,4 +1,4 @@
 patient_id;name;dob;address;visited_location;last_overseas_travel;covid_test;status;date_time
 12;john ni;17-08-2001;dfg;null;17-08-2001;null;null;9-4-2023 9:40:57;
-22;nick brown;19-09-1990;34 george rd;gas station;30-1-2007;positive;null;9-4-2023 13:32:24
-34;john iliadis;17-08-2001;17 mark st, melbourne;john wick hitman hotel;22-12-2022;positive;null;9-4-2023 13:33:39
+34;john iliadis;17-08-2001;17 mark st, melbourne;john wick hitman hotel;22-12-2022;negative;null;9-4-2023 13:33:39
+100;john iliadis;17-08-2001;22 aurora rd;holy moly donut shop;22-08-2022;positive;cured;9-4-2023 17:49:40

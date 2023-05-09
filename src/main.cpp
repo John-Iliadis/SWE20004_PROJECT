@@ -2,6 +2,8 @@
 #include "../include/option1.hpp"
 #include "../include/option2.hpp"
 #include "../include/option3.hpp"
+#include "../include/option4.hpp"
+#include "../include/option5.hpp"
 
 int main()
 {
@@ -50,7 +52,14 @@ int main()
 
     // testing
 
-    option3();
+    std::vector<std::vector<std::string>> vec {
+            {"1", "333", "666666"},
+            {"22", "4444", "1"},
+            {"88888888", "22", "1"},
+            {"1", "55555", "22"}
+    };
+
+    auto m = get_field_width(vec);
 
     return 0;
 }

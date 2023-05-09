@@ -136,6 +136,28 @@ void insert_patient_record(PatientRecord& record, const std::string& file_name)
     patient_details.close();
 }
 
+void insert_patient_record(PatientRecord& record, std::ofstream& file)
+{
+    std::time_t current_time = std::time(nullptr);
+
+    record.date_time = *std::localtime(&current_time);
+    record.date_time.tm_year += 1900;
+
+    std::string row {
+            record.id + ';' +
+            record.name + ';' +
+            record.dob + ';' +
+            record.address + ';' +
+            record.visited_location + ';' +
+            record.last_overseas_travel + ';' +
+            record.covid_test + ';' +
+            record.status + ';' +
+            date_to_string(record.date_time) + ' ' + time_to_string(record.date_time)
+    };
+
+    file << row << std::endl;
+}
+
 PatientRecord get_patient_record(std::ifstream& file, const std::string& id)
 {
     file.clear();
@@ -166,6 +188,24 @@ PatientRecord get_patient_record(std::ifstream& file, const std::string& id)
     }
 
     return PatientRecord();
+}
+
+PatientRecord get_patient_record(const std::string& row)
+{
+    PatientRecord record;
+
+    std::stringstream ss(row);
+
+    std::getline(ss, record.id, ';');
+    std::getline(ss, record.name, ';');
+    std::getline(ss, record.dob, ';');
+    std::getline(ss, record.address, ';');
+    std::getline(ss, record.visited_location, ';');
+    std::getline(ss, record.last_overseas_travel, ';');
+    std::getline(ss, record.covid_test, ';');
+    std::getline(ss, record.status, ';');
+
+    return record;
 }
 
 void copy_file(const std::string& copy_from, const std::string& copy_to)
