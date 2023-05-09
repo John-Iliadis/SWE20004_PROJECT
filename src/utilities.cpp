@@ -59,23 +59,6 @@ bool empty_database(std::ifstream& file)
     return false;
 }
 
-std::tm string_to_date(const std::string& str_date)
-{
-    std::tm date;
-    std::stringstream ss(str_date);
-    std::string value;
-    std::vector<std::string> vec;
-
-    while (std::getline(ss, value, '-'))
-        vec.push_back(value);
-
-    date.tm_mday = std::stoi(vec[0]);
-    date.tm_mon = std::stoi(vec[1]);
-    date.tm_year = std::stoi(vec[2]);
-
-    return date;
-}
-
 std::string date_to_string(std::tm& date)
 {
     std::string day = std::to_string(date.tm_mday);
@@ -218,24 +201,6 @@ PatientRecord get_patient_record(const std::string& row)
     std::getline(ss, record.status, ';');
 
     return record;
-}
-
-void copy_file(const std::string& copy_from, const std::string& copy_to)
-{
-    std::ifstream input_file(copy_from);
-    std::ofstream output_file(copy_to, std::ios::trunc);
-
-    if (input_file.fail() || output_file.fail())
-        throw std::runtime_error("copy_file() : Failed to open files");
-
-    std::string line;
-    while (std::getline(input_file, line))
-    {
-        output_file << line << '\n';
-    }
-
-    input_file.close();
-    output_file.close();
 }
 
 void copy_to_temp(std::ifstream& input_file, std::ofstream& output_file, PatientRecord& record)
