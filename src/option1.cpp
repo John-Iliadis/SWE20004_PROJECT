@@ -24,7 +24,6 @@ void option1()
         return;
     }
 
-
     PatientRecord record;
     get_id(patient_details, record);
     get_name(record);
@@ -53,7 +52,7 @@ void get_id(std::ifstream& file, PatientRecord& record)
 
     while (check_id_exists(file, record.id) || !is_num(record.id))
     {
-        std::cout << "PATIENT ID SHOULD BE NUMERIC AND UNIQUE\n";
+        std::cout << "\nPATIENT ID SHOULD BE NUMERIC AND UNIQUE\n";
         std::cout << "Enter patient id:";
         std::getline(std::cin, record.id);
     }
@@ -71,7 +70,7 @@ void get_name(PatientRecord& record)
 
     while (!std::regex_match(record.name, reg))
     {
-        std::cout << "INVALID NAME : Name should only contain letters and have 1-50 length\n";
+        std::cout << "\nINVALID NAME : Name should only contain letters and have 1-50 length\n";
         std::cout << "Enter full name:";
         std::getline(std::cin, record.name);
     }
@@ -84,7 +83,7 @@ void get_dob(PatientRecord& record)
 
     while (!check_date_format(record.dob))
     {
-        std::cout << "DATE FORMAT SHOULD BE (dd-mm-yyyy)\n";
+        std::cout << "\nDATE FORMAT SHOULD BE (dd-mm-yyyy)\n";
         std::cout << "Enter date of birth in this format (dd-mm-yyyy):";
         std::getline(std::cin, record.dob);
     }
@@ -99,7 +98,7 @@ void get_address(PatientRecord& record)
 
     while (!std::regex_match(record.address, reg))
     {
-        std::cout << "INVALID ADDRESS : No special characters are allowed and length should be 1-255\n";
+        std::cout << "\nINVALID ADDRESS : No special characters are allowed and length should be 1-255\n";
         std::cout << "Enter address:";
         std::getline(std::cin, record.address);
     }
@@ -112,7 +111,7 @@ void get_overseas_travel(PatientRecord& record)
 
     while (!check_date_format(record.last_overseas_travel))
     {
-        std::cout << "DATE FORMAT SHOULD BE (dd-mm-yyyy)\n";
+        std::cout << "\nDATE FORMAT SHOULD BE (dd-mm-yyyy)\n";
         std::cout << "Enter last overseas travel date in this format (dd-mm-yyyy):";
         std::getline(std::cin, record.last_overseas_travel);
     }
@@ -149,7 +148,7 @@ void pick_symptoms(PatientRecord& record, std::ifstream& file)
     std::regex reg("^[0-9,]*$");
     while (!std::regex_match(line, reg))
     {
-        std::cout << "INVALID INPUT : Only numbers and commas allowed\n";
+        std::cout << "\nINVALID INPUT : Only numbers and commas allowed\n";
         std::cout << "Select all the experienced symptoms, if any. Separate them with a comma (ie 2,5,8)\n"
                   << "-->";
 
@@ -233,7 +232,7 @@ void pick_high_risk_visited_locations(PatientRecord& record, std::ifstream& file
     std::regex reg("^[0-9,]*$");
     while (!std::regex_match(line, reg))
     {
-        std::cout << "INVALID INPUT : Only numbers and commas allowed\n";
+        std::cout << "\nINVALID INPUT : Only numbers and commas allowed\n";
         std::cout << "Select all the recently visited high risk locations, if any. Separate them with a comma (ie 2,5,8)\n"
                   << "-->";
 
@@ -282,13 +281,11 @@ void recommend_covid_test(PatientRecord& record)
     || !record.symptoms.medium_risk_symptoms.empty()
     || !record.symptoms.high_risk_symptoms.empty()))
     {
-        std::cout << "Result : Get a COVID test.";
+        std::cout << "\nResult : Get a COVID test.\n";
     }
     else if (record.visited_high_risk_locations.empty()
     && record.symptoms.high_risk_symptoms.empty())
     {
-        std::cout << "Result : Isolate yourself at home.";
+        std::cout << "\nResult : Isolate yourself at home.\n";
     }
-
-    std::cout << "\n";
 }

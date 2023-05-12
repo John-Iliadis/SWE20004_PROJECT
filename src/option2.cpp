@@ -18,7 +18,7 @@ void option2()
 
     if (empty_database(patient_details_i))
     {
-        std::cout << "The patient details database is empty\n";
+        std::cout << "\nThe patient details database is empty\n";
         patient_details_i.close();
         return;
     }
@@ -47,7 +47,6 @@ void option2()
     std::ofstream patient_file_o(patient_file_loc);
     std::ifstream temp_file_i(temp_file_loc);
 
-
     repopulate_main(temp_file_i, patient_file_o);
 
     temp_file_i.close();
@@ -61,7 +60,7 @@ void get_id(std::ifstream& file, std::string& id)
 
     while (!check_id_exists(file, id))
     {
-        std::cout << "THIS ID DOES NOT EXIST IN THE DATABASE\n";
+        std::cout << "\nTHIS ID DOES NOT EXIST IN THE DATABASE\n";
         std::cout << "Enter an existing id:";
 
         std::getline(std::cin, id);
@@ -78,7 +77,7 @@ void get_covid_test_result(std::string& covid_test_result)
 
     while (!std::regex_match(covid_test_result, reg))
     {
-        std::cout << "INVALID INPUT : Enter positive or negative\n";
+        std::cout << "\nINVALID INPUT : Enter positive or negative\n";
         std::cout << "Enter covid test result (positive/negative):";
         std::getline(std::cin, covid_test_result);
         str_tolower(covid_test_result);
@@ -94,7 +93,7 @@ void get_visited_location(PatientRecord& record)
 
     while (!std::regex_match(record.visited_location, reg))
     {
-        std::cout << "INVALID INPUT : Location can only contain letters and have 1-60 length\n";
+        std::cout << "\nINVALID INPUT : Location can only contain letters and have 1-60 length\n";
         std::cout << "Enter a recently visited location:";
         std::getline(std::cin, record.visited_location);
     }

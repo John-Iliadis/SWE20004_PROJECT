@@ -7,7 +7,6 @@
 #include <iomanip>
 #include <map>
 #include "utilities.hpp"
-#include "option4.hpp"
 
 typedef std::vector<std::vector<std::string>> table_t;
 

@@ -17,7 +17,7 @@ void option4()
 
     if (empty_database(patient_details_i))
     {
-        std::cout << "The patient details database is empty\n";
+        std::cout << "\nThe patient details database is empty\n";
         patient_details_i.close();
         return;
     }
@@ -37,7 +37,7 @@ void option4()
     // If none of the patients have covid, the function is terminated
     if (record.covid_test == "negative")
     {
-        std::cout << "None of the patients have covid\n";
+        std::cout << "\nNone of the patients have covid\n";
         return;
     }
 
@@ -84,7 +84,7 @@ void get_status(PatientRecord& record)
 
     while (!std::regex_match(record.status, reg))
     {
-        std::cout << "INVALID INPUT - Value should be in (dead/alive/cured)\n";
+        std::cout << "\nINVALID INPUT - Value should be in (dead/alive/cured)\n";
         std::cout << "Enter the patients new status (dead/alive/cured):";
         std::getline(std::cin, record.status);
         str_tolower(record.status);

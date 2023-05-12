@@ -1,20 +1,19 @@
-#include <iostream>
-#include "../include/option1.hpp"
-#include "../include/option2.hpp"
-#include "../include/option3.hpp"
-#include "../include/option4.hpp"
-#include "../include/option5.hpp"
+#include "../include/includes.hpp"
 
 int main()
 {
-    /*bool program_running = true;
+    std::map<int,void(*)()> options {
+            {1, &option1},
+            {2, &option2},
+            {3, &option3},
+            {4, &option4},
+            {5, &option5},
+    };
+
     std::string input;
     int option{};
 
-         //std::vector<void(*)()> funcs;
-
-
-    while (program_running)
+    while (true)
     {
         prompt();
 
@@ -30,29 +29,22 @@ int main()
             continue;
         }
 
-        switch (option)
+        if (option > 6)
         {
-            case 1:
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-            case 5:
-                break;
-            case 6:
-                program_running = false;
-                break;
-            default:
-                std::cout << "UNKNOWN SELECTION, PLEASE TRY AGAIN\n";
+            std::cout << "NOT A VALID OPTION\n";
         }
-    }*/
+        else if (option == 6)
+        {
+            std::cout << "\nGOODBYE\n";
+            break;
+        }
+
+        std::cout << std::endl;
+        options[option]();
+        std::cout << std::endl;
+    }
 
     // testing
-
-    option2();
 
    /* std::vector<std::vector<std::string>> vec {
             {"1", "333", "666666"},

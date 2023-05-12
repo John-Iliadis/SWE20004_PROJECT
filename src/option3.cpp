@@ -13,7 +13,7 @@ void option3()
 
     if (empty_database(high_risk_location_file))
     {
-        std::cout << "The high risk location database is empty\n";
+        std::cout << "\nThe high risk location database is empty\n";
         return;
     }
 
