@@ -18,39 +18,28 @@ void option5()
         return;
     }
 
+    // vector that holds all the rows
     table_t table;
 
+    // push back the table headers
     table.push_back(
             {"PATIENT ID", "NAME", "DATE OF BIRTH", "VISITED LOCATION", "LAST OVERSEAS TRAVEL", "COVID TEST RESULT",
              "STATUS"});
 
     std::string row;
-
     while (std::getline(patient_details, row))
     {
+        // get all the records in the vector
         PatientRecord record = get_patient_record(row);
         table.push_back(std::move(patient_record_to_arr(record)));
     }
 
+    // a map that holds the largest width of each field. Used for formatting
     std::unordered_map<int,int> field_widths = get_field_width(table);
 
     print_records(table, field_widths);
 
     patient_details.close();
-}
-
-std::vector<std::string> patient_record_to_arr(PatientRecord& record)
-{
-    std::vector<std::string> vec;
-    vec.push_back(std::move(record.id));
-    vec.push_back(std::move(record.name));
-    vec.push_back(std::move(record.dob));
-    vec.push_back(std::move(record.visited_location));
-    vec.push_back(std::move(record.last_overseas_travel));
-    vec.push_back(std::move(record.covid_test));
-    vec.push_back(std::move(record.status));
-
-    return vec;
 }
 
 std::unordered_map<int,int> get_field_width(const table_t& table)

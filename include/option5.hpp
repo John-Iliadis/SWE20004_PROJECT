@@ -11,8 +11,12 @@
 typedef std::vector<std::vector<std::string>> table_t;
 
 void option5();
-std::vector<std::string> patient_record_to_arr(PatientRecord& record);
+
+// This function returns a map that contains the largest width
+// out of every column in the database
 std::unordered_map<int,int> get_field_width(const table_t& table);
+
+// Prints the database as a table
 void print_records(table_t& table, std::unordered_map<int,int>& field_widths);
 
 #endif //PROJECT_CODE_OPTION5_HPP

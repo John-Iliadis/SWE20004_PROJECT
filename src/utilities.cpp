@@ -18,6 +18,8 @@ void prompt()
 bool check_id_exists(std::ifstream& file, const std::string& id)
 {
     std::string line;
+
+    // bring file pointer to the start of the file
     file.clear();
     file.seekg(0);
 
@@ -34,9 +36,9 @@ bool check_id_exists(std::ifstream& file, const std::string& id)
     return false;
 }
 
-// checks if string entered fits the dd-mm-yyyy format
 bool check_date_format(const std::string& date)
 {
+    // checks if date fits this format dd-mm-yyyy
     std::regex reg(R"(\b(0?[1-9]|[1-2][0-9]|3[0-1])-(0?[1-9]|1[0-2])-\d{4}\b)");
 
     if (std::regex_match(date, reg))
@@ -47,14 +49,14 @@ bool check_date_format(const std::string& date)
 
 bool empty_database(std::ifstream& file)
 {
-    std::string line;
-    std::getline(file, line);
-
+    // bring file pointer to the start of the file
     file.clear();
     file.seekg(0);
 
-    if (line == "")
-        return true;
+    std::string line;
+    std::getline(file, line);
+
+    if (line == "") return true; // database is empty
 
     return false;
 }
@@ -77,7 +79,6 @@ std::string time_to_string(std::tm& time)
     return hours + ':' + minutes + ':' + seconds;
 }
 
-// checks is the string is numeric
 bool is_num(const std::string& str)
 {
     if (std::ranges::all_of(str.begin(), str.end(), [] (char c) {
@@ -156,6 +157,7 @@ void insert_patient_record(PatientRecord& record, std::ofstream& file)
 
 PatientRecord get_patient_record(std::ifstream& file, const std::string& id)
 {
+    // move file pointer to start of file
     file.clear();
     file.seekg(0);
 
@@ -205,6 +207,7 @@ PatientRecord get_patient_record(const std::string& row)
 
 void copy_to_temp(std::ifstream& input_file, std::ofstream& output_file, PatientRecord& record)
 {
+    // move file pointer to start of file
     input_file.clear();
     input_file.seekg(0);
 
@@ -233,4 +236,18 @@ void repopulate_main(std::ifstream& input_file, std::ofstream& output_file)
     {
         output_file << line << std::endl;
     }
+}
+
+std::vector<std::string> patient_record_to_arr(PatientRecord& record)
+{
+    std::vector<std::string> vec;
+    vec.push_back(std::move(record.id));
+    vec.push_back(std::move(record.name));
+    vec.push_back(std::move(record.dob));
+    vec.push_back(std::move(record.visited_location));
+    vec.push_back(std::move(record.last_overseas_travel));
+    vec.push_back(std::move(record.covid_test));
+    vec.push_back(std::move(record.status));
+
+    return vec;
 }

@@ -10,11 +10,14 @@ void option4()
     std::string temp_file_loc = "../temp.txt";
 
     std::ifstream patient_details_i(patient_file_loc);
+
+    // open a temporary file used to copy the records
     std::ofstream temp_file_o(temp_file_loc, std::ios::trunc);
 
-    if (patient_details_i.fail())
-        throw std::runtime_error("option4() : Failed to open file");
+    if (patient_details_i.fail() || temp_file_o.fail())
+        throw std::runtime_error("option4() : Failed to open files");
 
+    // checks if database is empty
     if (empty_database(patient_details_i))
     {
         std::cout << "\nThe patient details database is empty\n";
@@ -35,7 +38,7 @@ void option4()
     PatientRecord record = find_positive_patient(rows);
 
     // If none of the patients have covid, the function is terminated
-    if (record.covid_test == "negative")
+    if (record.covid_test != "positive")
     {
         std::cout << "\nNone of the patients have covid\n";
         return;
@@ -43,15 +46,16 @@ void option4()
 
     get_status(record); // input the new status
 
-    copy_to_temp(patient_details_i, temp_file_o, record); // copy file to temp
+    // copying the patient database to a temporary file
+    copy_to_temp(patient_details_i, temp_file_o, record);
 
     patient_details_i.close();
     temp_file_o.close();
 
-    // open the patient details database for writing
     std::ofstream patient_details_o(patient_file_loc, std::ios::trunc);
     std::ifstream temp_file_i(temp_file_loc);
 
+    // copy the contents back to the original file with the new updated record
     repopulate_main(temp_file_i, patient_details_o);
 
     patient_details_o.close();

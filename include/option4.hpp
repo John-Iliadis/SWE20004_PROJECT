@@ -8,7 +8,10 @@
 #include "utilities.hpp"
 
 void option4();
+
+// gets the most recent positive covid patient
 PatientRecord find_positive_patient(std::vector<std::string>& vec);
+
 void get_status(PatientRecord& record);
 
 #endif //PROJECT_CODE_OPTION4_HPP

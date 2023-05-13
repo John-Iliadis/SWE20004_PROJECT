@@ -40,8 +40,10 @@ void option1()
     symptoms_file.close();
     high_risk_loc_file.close();
 
+    // insert the new record in the database
     insert_patient_record(record, "../patient_details.txt");
 
+    // finally recommend a test
     recommend_covid_test(record);
 }
 
@@ -50,6 +52,7 @@ void get_id(std::ifstream& file, PatientRecord& record)
     std::cout << "Enter patient id:";
     std::getline(std::cin, record.id);
 
+    // id must be unique and numeric
     while (check_id_exists(file, record.id) || !is_num(record.id))
     {
         std::cout << "\nPATIENT ID SHOULD BE NUMERIC AND UNIQUE\n";
@@ -60,9 +63,6 @@ void get_id(std::ifstream& file, PatientRecord& record)
 
 void get_name(PatientRecord& record)
 {
-    // this function gets the fullname of the patient
-    // the input must not be empty or contain a comma, since that can mess up searching later
-
     std::regex reg("^[a-zA-Z ]{1,50}$");
 
     std::cout << "Enter full name:";
@@ -120,11 +120,14 @@ void get_overseas_travel(PatientRecord& record)
 void pick_symptoms(PatientRecord& record, std::ifstream& file)
 {
     std::string line;
+
+    // map that stores the id that points to the symptom name and risk
     std::unordered_map<int, std::pair<std::string, std::string>> symptoms_map;
+    int id = 1;
 
     std::cout << "\nSymptoms List:\n";
 
-    int id = 1;
+    // Printing out all the symptoms and adding them to the map
     while (std::getline(file, line))
     {
         std::stringstream ss(line);
@@ -143,7 +146,7 @@ void pick_symptoms(PatientRecord& record, std::ifstream& file)
 
     std::getline(std::cin, line);
 
-    if (line == "") return; // patient has no symptoms
+    if (line == "") return; // if there is no input, the patient has no symptoms
 
     std::regex reg("^[0-9,]*$");
     while (!std::regex_match(line, reg))
@@ -167,7 +170,8 @@ void pick_symptoms(PatientRecord& record, std::ifstream& file)
         {
             int symptom_id = std::stoi(num);
 
-            if (symptom_id > symptoms_map.size()) continue; // checks if num entered is larger than the list
+            // checks if num entered is larger than the number of symptom records in the database
+            if (symptom_id > symptoms_map.size()) continue;
 
             selected_symptoms.push_back(symptom_id);
         }
@@ -177,7 +181,8 @@ void pick_symptoms(PatientRecord& record, std::ifstream& file)
         }
     }
 
-    // checks if the symptom is already in the list. If it isn't, then the symptom will be added
+    // Local function that adds the selected symptoms
+    // Will check if the symptom is already in the list before adding, so duplicates will be avoided
     auto add_symptom = [] (std::vector<std::string>& vec, const std::string& str) {
         if (std::find(vec.begin(), vec.end(), str) == vec.end())
             vec.push_back(str);
@@ -187,7 +192,7 @@ void pick_symptoms(PatientRecord& record, std::ifstream& file)
 
     for (int symptom_id : selected_symptoms)
     {
-        auto& symptom = symptoms_map[symptom_id];
+        std::pair<std::string, std::string>& symptom = symptoms_map[symptom_id];
 
         if (symptom.second == "high")
             add_symptom(symptoms.high_risk_symptoms, symptom.first);
@@ -206,6 +211,7 @@ void pick_high_risk_visited_locations(PatientRecord& record, std::ifstream& file
         return; // there are no high risks locations in database so this part is skipped
     }
 
+    // map that holds the high risk locations
     std::unordered_map<int, std::string> hr_locations_map;
     std::string line;
     int id = 1;
@@ -251,7 +257,8 @@ void pick_high_risk_visited_locations(PatientRecord& record, std::ifstream& file
         {
             int location_id = std::stoi(num);
 
-            if (location_id > hr_locations_map.size()) continue;  // checks if num entered is larger than the list
+            // checks if num entered is larger than the number of high risk location records in database
+            if (location_id > hr_locations_map.size()) continue;
 
             selected_locations.push_back(location_id);
         }
@@ -281,11 +288,14 @@ void recommend_covid_test(PatientRecord& record)
     || !record.symptoms.medium_risk_symptoms.empty()
     || !record.symptoms.high_risk_symptoms.empty()))
     {
+        // if patient has visited a high risk location and has any symptoms, a test is recommended
         std::cout << "\nResult : Get a COVID test.\n";
     }
     else if (record.visited_high_risk_locations.empty()
     && record.symptoms.high_risk_symptoms.empty())
     {
+        // if a patient has not visited any high risk locations and doesn't have any high risk symptom,
+        // a test is not recommended
         std::cout << "\nResult : Isolate yourself at home.\n";
     }
 }

@@ -11,6 +11,7 @@ void option3()
     if (high_risk_location_file.fail())
         throw std::runtime_error("option3() : Failed to open files");
 
+    // checks if high risk location database is empty
     if (empty_database(high_risk_location_file))
     {
         std::cout << "\nThe high risk location database is empty\n";
@@ -32,7 +33,7 @@ void option3()
             break;
         }
 
-        // if there is only one record, then the pointer will be end up at the start
+        // if there is only one record, then the pointer will be end up back at the start
         high_risk_location_file.seekg(i, std::ios::beg);
     }
 
