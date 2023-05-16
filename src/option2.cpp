@@ -1,6 +1,11 @@
-//
-// Created by Gianni on 9/05/2023.
-//
+/*
+ * File option2.cpp
+ * Created on 9/05/2023
+ *
+ * Ioannis Iliadis - 104010553
+ * Jiin Wen Tan - 102846565
+ * Jamie Liddicoat - 103985278
+ * */
 
 #include "../include/option2.hpp"
 
@@ -19,11 +24,11 @@ void option2()
     if (patient_details_i.fail() || temp_file_o.fail())
         throw std::runtime_error("option2() : Failed to open files.");
 
-    // if the patient database is empty, there will be no patient to update the status on,
+    // if the patient database is empty, there will be no patient to update the covid test on,
     // so we exit the option
     if (empty_database(patient_details_i))
     {
-        std::cout << "\nThe patient details database is empty\n";
+        std::cout << "THE PATIENT DETAILS DATABASE IS EMPTY\n";
         patient_details_i.close();
         temp_file_o.close();
         return;

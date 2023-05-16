@@ -1,13 +1,18 @@
-//
-// Created by Gianni on 3/05/2023.
-//
+/*
+ * File utilities.cpp
+ * Created on 3/05/2023
+ *
+ * Ioannis Iliadis - 104010553
+ * Jiin Wen Tan - 102846565
+ * Jamie Liddicoat - 103985278
+ * */
 
 #include "../include/utilities.hpp"
 
 void prompt()
 {
     std::cout << "Press 1 - Enter details for a COVID test recommendation\n";
-    std::cout << "Press 2 - Submit COVID test status\n";
+    std::cout << "Press 2 - Submit COVID test result\n";
     std::cout << "Press 3 - Display the updated location (high risk for COVID)\n";
     std::cout << "Press 4 - Update COVID patient details\n";
     std::cout << "Press 5 - Display all positive COVID patients details\n";
@@ -79,6 +84,32 @@ std::string time_to_string(std::tm& time)
     return hours + ':' + minutes + ':' + seconds;
 }
 
+std::tm string_to_date(const std::string& str_date)
+{
+    std::stringstream ss(str_date);
+    std::string day;
+    std::string month;
+    std::string year;
+    std::tm date;
+
+    std::getline(ss, day, '-');
+    std::getline(ss, month, '-');
+    std::getline(ss, year, '-');
+
+    date.tm_mday = std::stoi(day);
+    date.tm_mon = std::stoi(month);
+    date.tm_year = std::stoi(year);
+
+    return date;
+}
+
+int get_age(const PatientRecord& record)
+{
+    std::tm dob = string_to_date(record.dob);
+
+    return record.date_time.tm_year - dob.tm_year;
+}
+
 bool is_num(const std::string& str)
 {
     if (std::ranges::all_of(str.begin(), str.end(), [] (char c) {
@@ -116,6 +147,7 @@ void insert_patient_record(PatientRecord& record, const std::string& file_name)
 
     record.date_time = *std::localtime(&current_time);
     record.date_time.tm_year += 1900;
+    record.date_time.tm_mon += 1;
 
     std::string row {
             record.id + ';' +
@@ -139,6 +171,7 @@ void insert_patient_record(PatientRecord& record, std::ofstream& file)
 
     record.date_time = *std::localtime(&current_time);
     record.date_time.tm_year += 1900;
+    record.date_time.tm_mon += 1;
 
     std::string row {
             record.id + ';' +
@@ -244,6 +277,7 @@ std::vector<std::string> patient_record_to_arr(PatientRecord& record)
     vec.push_back(std::move(record.id));
     vec.push_back(std::move(record.name));
     vec.push_back(std::move(record.dob));
+    vec.push_back(std::move(record.address));
     vec.push_back(std::move(record.visited_location));
     vec.push_back(std::move(record.last_overseas_travel));
     vec.push_back(std::move(record.covid_test));

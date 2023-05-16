@@ -1,3 +1,12 @@
+/*
+ * File main.cpp
+ * Created on 3/05/2023
+ *
+ * Ioannis Iliadis - 104010553
+ * Jiin Wen Tan - 102846565
+ * Jamie Liddicoat - 103985278
+ * */
+
 #include "../include/includes.hpp"
 
 int main()
@@ -25,13 +34,14 @@ int main()
         }
         catch (std::invalid_argument&)
         {
-            std::cout << "ONLY NUMBERS ALLOWED\n";
+            std::cout << "\nONLY NUMBERS ALLOWED\n\n";
             continue;
         }
 
         if (option > 6)
         {
-            std::cout << "NOT A VALID OPTION\n";
+            std::cout << "\nNOT A VALID OPTION\n\n";
+            continue;
         }
         else if (option == 6)
         {
@@ -43,17 +53,6 @@ int main()
         options[option]();
         std::cout << std::endl;
     }
-
-    // testing
-
-   /* std::vector<std::vector<std::string>> vec {
-            {"1", "333", "666666"},
-            {"22", "4444", "1"},
-            {"88888888", "22", "1"},
-            {"1", "55555", "22"}
-    };
-
-    auto m = get_field_width(vec);*/
 
     return 0;
 }

@@ -1,6 +1,13 @@
-//
-// Created by Gianni on 3/05/2023.
-//
+/*
+ * File patient_record.hpp
+ * Created on 3/05/2023
+ *
+ * Ioannis Iliadis - 104010553
+ * Jiin Wen Tan - 102846565
+ * Jamie Liddicoat - 103985278
+ *
+ * Description: The patient record struct is used to handle the users input data in code.
+ * */
 
 #ifndef PROJECT_CODE_PATIENT_RECORD_HPP
 #define PROJECT_CODE_PATIENT_RECORD_HPP

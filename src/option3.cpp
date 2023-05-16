@@ -1,6 +1,11 @@
-//
-// Created by Gianni on 9/05/2023.
-//
+/*
+ * File option3.cpp
+ * Created on 9/05/2023
+ *
+ * Ioannis Iliadis - 104010553
+ * Jiin Wen Tan - 102846565
+ * Jamie Liddicoat - 103985278
+ * */
 
 #include "../include/option3.hpp"
 
@@ -14,7 +19,7 @@ void option3()
     // checks if high risk location database is empty
     if (empty_database(high_risk_location_file))
     {
-        std::cout << "\nThe high risk location database is empty\n";
+        std::cout << "THE HIGH RISK LOCATION DATABASE IS EMPTY\n";
         return;
     }
 

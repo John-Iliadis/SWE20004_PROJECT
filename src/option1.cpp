@@ -1,6 +1,11 @@
-//
-// Created by Gianni on 3/05/2023.
-//
+/*
+ * File option1.cpp
+ * Created on 3/05/2023
+ *
+ * Ioannis Iliadis - 104010553
+ * Jiin Wen Tan - 102846565
+ * Jamie Liddicoat - 103985278
+ * */
 
 #include "../include/option1.hpp"
 
@@ -181,8 +186,8 @@ void pick_symptoms(PatientRecord& record, std::ifstream& file)
         }
     }
 
-    // Local function that adds the selected symptoms
-    // Will check if the symptom is already in the list before adding, so duplicates will be avoided
+    // Local function that adds the selected symptoms.
+    // Will check if the symptom is already in the list before adding, so duplicates will be avoided.
     auto add_symptom = [] (std::vector<std::string>& vec, const std::string& str) {
         if (std::find(vec.begin(), vec.end(), str) == vec.end())
             vec.push_back(str);
@@ -190,6 +195,7 @@ void pick_symptoms(PatientRecord& record, std::ifstream& file)
 
     Symptoms& symptoms = record.symptoms;
 
+    // add selected symptoms to the Symptoms struct
     for (int symptom_id : selected_symptoms)
     {
         std::pair<std::string, std::string>& symptom = symptoms_map[symptom_id];
@@ -207,7 +213,7 @@ void pick_high_risk_visited_locations(PatientRecord& record, std::ifstream& file
 {
     if (empty_database(file))
     {
-        std::cout << "NO HIGH RISK LOCATIONS IN DATABASE";
+        std::cout << "NO HIGH RISK LOCATIONS IN DATABASE. This part is skipped.\n";
         return; // there are no high risks locations in database so this part is skipped
     }
 
@@ -281,21 +287,55 @@ void pick_high_risk_visited_locations(PatientRecord& record, std::ifstream& file
 
 void recommend_covid_test(PatientRecord& record)
 {
+    // get date of last overseas travel trip
+    std::tm overseas_travel_date = string_to_date(record.last_overseas_travel);
+
     std::cout << '\n';
 
+    // if a patient has any high risk symptom, recommend a test
+    if (!record.symptoms.high_risk_symptoms.empty())
+    {
+        std::cout << "Result : Get a COVID test.\n";
+        return;
+    }
+
+    // if patient has visited a high risk location and has any symptoms, a test is recommended
     if (!record.visited_high_risk_locations.empty()
     && (!record.symptoms.low_risk_symptoms.empty()
     || !record.symptoms.medium_risk_symptoms.empty()
     || !record.symptoms.high_risk_symptoms.empty()))
     {
-        // if patient has visited a high risk location and has any symptoms, a test is recommended
-        std::cout << "\nResult : Get a COVID test.\n";
+        std::cout << "Result : Get a COVID test.\n";
+        return;
     }
-    else if (record.visited_high_risk_locations.empty()
-    && record.symptoms.high_risk_symptoms.empty())
+
+    // if patient has traveled overseas within 2 months of the current date, a test is recommended
+    if (record.date_time.tm_year == overseas_travel_date.tm_year
+    && (record.date_time.tm_mon - overseas_travel_date.tm_mon) <= 2)
     {
-        // if a patient has not visited any high risk locations and doesn't have any high risk symptom,
-        // a test is not recommended
-        std::cout << "\nResult : Isolate yourself at home.\n";
+        std::cout << "Result : Get a COVID test.\n";
+        return;
     }
+
+    // if the patient is 50 years old or older, and has a total of 2 or more low/medium symptoms,
+    // or has any high risk symptom a test is recommended
+    if (get_age(record) >= 50
+    && ((!record.symptoms.high_risk_symptoms.empty())
+    || ((record.symptoms.low_risk_symptoms.size() + record.symptoms.medium_risk_symptoms.size()) >= 2)))
+    {
+        std::cout << "Result : Get a COVID test.\n";
+        return;
+    }
+
+    // if a patient has not visited any high risk locations and has medium/low risk symptoms,
+    // isolation is recommended instead
+    if (record.visited_high_risk_locations.empty()
+    && (!record.symptoms.medium_risk_symptoms.empty() || !record.symptoms.low_risk_symptoms.empty()))
+    {
+        std::cout << "Result : Isolate yourself at home.\n";
+        return;
+    }
+
+    // if no test cases are true, then a covid test is not needed
+    std::cout << "Result : No COVID test needed.\n";
 }

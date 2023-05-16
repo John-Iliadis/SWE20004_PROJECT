@@ -1,6 +1,11 @@
-//
-// Created by Gianni on 9/05/2023.
-//
+/*
+ * File option4.cpp
+ * Created on 9/05/2023
+ *
+ * Ioannis Iliadis - 104010553
+ * Jiin Wen Tan - 102846565
+ * Jamie Liddicoat - 103985278
+ * */
 
 #include "../include/option4.hpp"
 
@@ -17,10 +22,11 @@ void option4()
     if (patient_details_i.fail() || temp_file_o.fail())
         throw std::runtime_error("option4() : Failed to open files");
 
-    // checks if database is empty
+    // if the patient database is empty, there will be no patient to update the status on,
+    // so we exit the option
     if (empty_database(patient_details_i))
     {
-        std::cout << "\nThe patient details database is empty\n";
+        std::cout << "THE PATIENT DETAILS DATABASE IS EMPTY\n";
         patient_details_i.close();
         return;
     }

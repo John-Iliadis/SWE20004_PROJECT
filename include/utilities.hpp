@@ -1,6 +1,13 @@
-//
-// Created by Gianni on 3/05/2023.
-//
+/*
+ * File utilities.hpp
+ * Created on 3/05/2023
+ *
+ * Ioannis Iliadis - 104010553
+ * Jiin Wen Tan - 102846565
+ * Jamie Liddicoat - 103985278
+ *
+ * Description: Some common utility functions which are used throughout the project.
+ * */
 
 #ifndef PROJECT_CODE_UTILITIES_HPP
 #define PROJECT_CODE_UTILITIES_HPP
@@ -25,6 +32,10 @@ bool empty_database(std::ifstream& file);
 
 std::string date_to_string(std::tm& date);
 std::string time_to_string(std::tm& time);
+std::tm string_to_date(const std::string& str_date);
+
+// get the age of a patient
+int get_age(const PatientRecord& record);
 
 // checks is the string is numeric
 bool is_num(const std::string& str);

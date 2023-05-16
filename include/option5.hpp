@@ -1,6 +1,13 @@
-//
-// Created by Gianni on 9/05/2023.
-//
+/*
+ * File option5.hpp
+ * Created on 9/05/2023
+ *
+ * Ioannis Iliadis - 104010553
+ * Jiin Wen Tan - 102846565
+ * Jamie Liddicoat - 103985278
+ *
+ * Description: Option 5 is used to print out the patient details database in a table format.
+ * */
 
 #ifndef PROJECT_CODE_OPTION5_HPP
 #define PROJECT_CODE_OPTION5_HPP
