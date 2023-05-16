@@ -86,16 +86,16 @@ PatientRecord find_positive_patient(std::vector<std::string>& vec)
 
 void get_status(PatientRecord& record)
 {
-    std::regex reg("\\b(dead|alive|cured)\\b");
+    std::regex reg("\\b(dead|cured)\\b");
 
-    std::cout << "Enter the patients new status (dead/alive/cured):";
+    std::cout << "Enter the patients new status (dead/cured):";
     std::getline(std::cin, record.status);
     str_tolower(record.status);
 
     while (!std::regex_match(record.status, reg))
     {
-        std::cout << "\nINVALID INPUT - Value should be in (dead/alive/cured)\n";
-        std::cout << "Enter the patients new status (dead/alive/cured):";
+        std::cout << "\nINVALID INPUT - Value should be in (dead/cured)\n";
+        std::cout << "Enter the patients new status (dead/cured):";
         std::getline(std::cin, record.status);
         str_tolower(record.status);
     }

@@ -39,7 +39,7 @@ void option1()
     pick_high_risk_visited_locations(record, high_risk_loc_file);
     record.visited_location = "null";
     record.covid_test = "null";
-    record.status = "null";
+    record.status = "alive";
 
     patient_details.close();
     symptoms_file.close();
