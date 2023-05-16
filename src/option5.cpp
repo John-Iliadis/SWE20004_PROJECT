@@ -37,7 +37,9 @@ void option5()
     {
         // get all the records in the vector
         PatientRecord record = get_patient_record(row);
-        table.push_back(std::move(patient_record_to_arr(record)));
+
+        if (record.covid_test == "positive")
+            table.push_back(std::move(patient_record_to_arr(record)));
     }
 
     // a map that holds the largest width of each field. Used for formatting
