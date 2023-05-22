@@ -1,12 +1,12 @@
-2;rory beor;3-06-1950;81 brown street, nsw;null;15-12-2007;null;null;16-5-2023 9:33:16
-3;mia glass;30-04-1997;20 shamrock av, nsw;null;23-09-2019;null;null;16-5-2023 9:34:22
-6;lincoln lindell;13-08-2003;90 albacore crescent, vic;null;12-02-2012;null;null;16-5-2023 9:37:54
-9;nathan bushell;12-09-1976;64 eungella road;null;17-03-2014;null;null;16-5-2023 9:41:9
-10;amelie bonnor;25-03-2002;87 junction st, nsw;null;17-08-2021;null;null;16-5-2023 9:42:17
-11;ioannis iliadis;17-08-2001;27 romilly av, vic;null;24-08-2022;null;null;16-5-2023 9:42:54
+2;rory beor;3-06-1950;81 brown street, nsw;null;15-12-2007;null;alive;16-5-2023 9:33:16
+3;mia glass;30-04-1997;20 shamrock av, nsw;null;23-09-2019;null;alive;16-5-2023 9:34:22
+6;lincoln lindell;13-08-2003;90 albacore crescent, vic;null;12-02-2012;null;alive;16-5-2023 9:37:54
+9;nathan bushell;12-09-1976;64 eungella road;null;17-03-2014;null;alive;16-5-2023 9:41:9
+10;amelie bonnor;25-03-2002;87 junction st, nsw;null;17-08-2021;null;alive;16-5-2023 9:42:17
+11;ioannis iliadis;17-08-2001;27 romilly av, vic;null;24-08-2022;null;alive;16-5-2023 9:42:54
 1;ryder wise;24-01-1990;22 issac road, tas;flagstaff station;12-08-2022;positive;dead;16-4-2023 9:50:28
-5;mary hindley;27-02-2001;61 jones road, qld;null;12-02-2015;negative;null;16-4-2023 10:24:7
-12;mike brown;12-10-1982;13 aurora av, wa;null;3-04-2023;null;null;16-5-2023 11:9:40
-7;charlotte mccall;3-11-1991;73 gloucester av, sa;null;28-04-2018;null;null;16-5-2023 12:40:33
-8;edward blake;13-07-1981;51 norton street, wa;macedon plaza;8-12-2009;positive;null;16-5-2023 14:37:6
-4;layla griffen;22-02-1988;36 thule drive, sa;box hill hospital;8-09-2020;positive;cured;16-5-2023 15:42:24
+5;mary hindley;27-02-2001;61 jones road, qld;null;12-02-2015;negative;alive;16-4-2023 10:24:7
+12;mike brown;12-10-1982;13 aurora av, wa;null;3-04-2023;null;alive;16-5-2023 11:9:40
+7;charlotte mccall;3-11-1991;73 gloucester av, sa;null;28-04-2018;null;alive;16-5-2023 12:40:33
+8;edward blake;13-07-1981;51 norton street, wa;macedon plaza;8-12-2009;positive;alive;16-5-2023 14:37:6
+4;layla griffen;22-02-1988;36 thule drive, sa;box hill hospital;8-09-2020;positive;dead;17-5-2023 20:17:47
